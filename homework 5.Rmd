@@ -3,6 +3,7 @@ title: "Untitled"
 output: github_document
 ---
 
+# Problem 1
 ```{r}
 library(tidyverse)
 
@@ -38,3 +39,18 @@ ggplot(newdata,aes(x = week, y = observation, color = subject)) +
 ```
 
 * From the ploy, we can find the observations in exp group is obviously higher than observations in control group.
+
+
+# Problme 2
+```{r}
+library(tidyverse)
+data=read_csv(file="C:/Users/lenovo/Desktop/p8105/data_import_examples/homicide-data.csv")
+data
+data=data%>%
+  unite("city_state",c("city","state"))%>%
+  group_by(city_state)%>%
+  summarize(total_homicide=n())
+data
+```
+
+* This data collects data of homicide criminals from 50 states in US, including their name,sex,age,race,living city,report date and disposition status. 
