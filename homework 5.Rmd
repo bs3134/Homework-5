@@ -47,10 +47,18 @@ library(tidyverse)
 data=read_csv(file="C:/Users/lenovo/Desktop/p8105/data_import_examples/homicide-data.csv")
 data
 data=data%>%
-  unite("city_state",c("city","state"))%>%
+  unite("city_state",c("city","state"))
+data
+totalhomicide=data%>%
   group_by(city_state)%>%
   summarize(total_homicide=n())
-data
+totalhomicide
+unsolved=data%>%
+  group_by(city_state)%>%
+  filter(disposition%in%c("Closed without arrest","Open/No arrest"))%>%
+  summarize(unsolved_homicide=n())
+unsolved  
+  
 ```
 
 * This data collects data of homicide criminals from 50 states in US, including their name,sex,age,race,living city,report date and disposition status. 

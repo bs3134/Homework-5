@@ -399,10 +399,31 @@ data
 
 ``` r
 data=data%>%
-  unite("city_state",c("city","state"))%>%
+  unite("city_state",c("city","state"))
+data
+```
+
+    ## # A tibble: 52,179 x 11
+    ##    uid   reported_date victim_last victim_first victim_race victim_age
+    ##    <chr>         <int> <chr>       <chr>        <chr>       <chr>     
+    ##  1 Alb-~      20100504 GARCIA      JUAN         Hispanic    78        
+    ##  2 Alb-~      20100216 MONTOYA     CAMERON      Hispanic    17        
+    ##  3 Alb-~      20100601 SATTERFIELD VIVIANA      White       15        
+    ##  4 Alb-~      20100101 MENDIOLA    CARLOS       Hispanic    32        
+    ##  5 Alb-~      20100102 MULA        VIVIAN       White       72        
+    ##  6 Alb-~      20100126 BOOK        GERALDINE    White       91        
+    ##  7 Alb-~      20100127 MALDONADO   DAVID        Hispanic    52        
+    ##  8 Alb-~      20100127 MALDONADO   CONNIE       Hispanic    52        
+    ##  9 Alb-~      20100130 MARTIN-LEY~ GUSTAVO      White       56        
+    ## 10 Alb-~      20100210 HERRERA     ISRAEL       Hispanic    43        
+    ## # ... with 52,169 more rows, and 5 more variables: victim_sex <chr>,
+    ## #   city_state <chr>, lat <dbl>, lon <dbl>, disposition <chr>
+
+``` r
+totalhomicide=data%>%
   group_by(city_state)%>%
   summarize(total_homicide=n())
-data
+totalhomicide
 ```
 
     ## # A tibble: 51 x 2
@@ -419,5 +440,28 @@ data
     ##  9 Chicago_IL               5535
     ## 10 Cincinnati_OH             694
     ## # ... with 41 more rows
+
+``` r
+unsolved=data%>%
+  group_by(city_state)%>%
+  filter(disposition%in%c("Closed without arrest","Open/No arrest"))%>%
+  summarize(unsolved_homicide=n())
+unsolved  
+```
+
+    ## # A tibble: 50 x 2
+    ##    city_state     unsolved_homicide
+    ##    <chr>                      <int>
+    ##  1 Albuquerque_NM               146
+    ##  2 Atlanta_GA                   373
+    ##  3 Baltimore_MD                1825
+    ##  4 Baton Rouge_LA               196
+    ##  5 Birmingham_AL                347
+    ##  6 Boston_MA                    310
+    ##  7 Buffalo_NY                   319
+    ##  8 Charlotte_NC                 206
+    ##  9 Chicago_IL                  4073
+    ## 10 Cincinnati_OH                309
+    ## # ... with 40 more rows
 
 -   This data collects data of homicide criminals from 50 states in US, including their name,sex,age,race,living city,report date and disposition status.
