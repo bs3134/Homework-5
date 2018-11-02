@@ -5,6 +5,21 @@ output: github_document
 
 ```{r}
 library(tidyverse)
-list.files("C:/Users/lenovo/Desktop/p8105/data_import_examples",pattern="^con|^exp")
+filename=list.files("C:/Users/lenovo/Desktop/p8105/data_import_examples",pattern="^con|^exp")
+allname=tibble(filename)
+allname
+
+readdata=function(path){
+  read_csv(file=path)
+}
+
+allpath=c("C:/Users/lenovo/Desktop/p8105/data_import_examples/con_01.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/con_02.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/con_03.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/con_04.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/con_05.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/con_06.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/con_07.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/con_08.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/con_09.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/con_10.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/exp_01.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/exp_02.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/exp_03.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/exp_04.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/exp_05.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/exp_06.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/exp_07.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/exp_08.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/exp_09.csv","C:/Users/lenovo/Desktop/p8105/data_import_examples/exp_10.csv")
+alldata=map(allpath,readdata)
+
+newdata=allname%>%
+  mutate(alldata)%>%
+  unnest(alldata)
+newdata
+
 
 ```
