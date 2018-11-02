@@ -3,3 +3,8 @@ title: "Untitled"
 output: github_document
 ---
 
+```{r}
+library(tidyverse)
+list.files("C:/Users/lenovo/Desktop/p8105/data_import_examples",pattern="^con|^exp")
+
+```
