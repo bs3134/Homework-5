@@ -5,6 +5,7 @@ output: github_document
 
 ```{r}
 library(tidyverse)
+
 filename=list.files("C:/Users/lenovo/Desktop/p8105/data_import_examples",pattern="^con|^exp")
 allname=tibble(filename)
 allname
@@ -18,8 +19,22 @@ alldata=map(allpath,readdata)
 
 newdata=allname%>%
   mutate(alldata)%>%
-  unnest(alldata)
+  unnest(alldata)%>%
+  separate(filename,into=c("subject","csv"),sep=6)%>%
+  select(-csv)
+ 
 newdata
-
+newdata=newdata%>%
+  gather(key=week,value=observation,week_1:week_8)
+newdata
+ggplot(newdata,aes(x = week, y = observation, color = subject)) + 
+  geom_point()+
+  geom_smooth(se = FALSE) +
+  viridis::scale_color_viridis(
+    name = "day", 
+    discrete = TRUE
+  )
 
 ```
+
+* From the ploy, we can find the observations in exp group is obviously higher than observations in control group.
