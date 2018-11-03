@@ -358,6 +358,7 @@ Problme 2
 
 ``` r
 library(tidyverse)
+
 data=read_csv(file="C:/Users/lenovo/Desktop/p8105/data_import_examples/homicide-data.csv")
 ```
 
@@ -422,11 +423,12 @@ data
 ``` r
 totalhomicide=data%>%
   group_by(city_state)%>%
-  summarize(total_homicide=n())
+  summarize(total_homicide=n())%>%
+  filter(!city_state=="Tulsa_AL")
 totalhomicide
 ```
 
-    ## # A tibble: 51 x 2
+    ## # A tibble: 50 x 2
     ##    city_state     total_homicide
     ##    <chr>                   <int>
     ##  1 Albuquerque_NM            378
@@ -439,7 +441,7 @@ totalhomicide
     ##  8 Charlotte_NC              687
     ##  9 Chicago_IL               5535
     ## 10 Cincinnati_OH             694
-    ## # ... with 41 more rows
+    ## # ... with 40 more rows
 
 ``` r
 unsolved=data%>%
@@ -463,5 +465,71 @@ unsolved
     ##  9 Chicago_IL                  4073
     ## 10 Cincinnati_OH                309
     ## # ... with 40 more rows
+
+``` r
+baltimore_total=filter(totalhomicide,city_state=="Baltimore_MD")
+baltimore_total
+```
+
+    ## # A tibble: 1 x 2
+    ##   city_state   total_homicide
+    ##   <chr>                 <int>
+    ## 1 Baltimore_MD           2827
+
+``` r
+baltimore_unsolved=filter(unsolved,city_state=="Baltimore_MD")
+baltimore_unsolved
+```
+
+    ## # A tibble: 1 x 2
+    ##   city_state   unsolved_homicide
+    ##   <chr>                    <int>
+    ## 1 Baltimore_MD              1825
+
+``` r
+result=prop.test(baltimore_unsolved$unsolved_homicide,baltimore_total$total_homicide)
+result
+```
+
+    ## 
+    ##  1-sample proportions test with continuity correction
+    ## 
+    ## data:  baltimore_unsolved$unsolved_homicide out of baltimore_total$total_homicide, null probability 0.5
+    ## X-squared = 239.01, df = 1, p-value < 2.2e-16
+    ## alternative hypothesis: true p is not equal to 0.5
+    ## 95 percent confidence interval:
+    ##  0.6275625 0.6631599
+    ## sample estimates:
+    ##         p 
+    ## 0.6455607
+
+``` r
+result_tidy=broom::tidy(result)
+result_tidy
+```
+
+    ## # A tibble: 1 x 8
+    ##   estimate statistic  p.value parameter conf.low conf.high method
+    ##      <dbl>     <dbl>    <dbl>     <int>    <dbl>     <dbl> <chr> 
+    ## 1    0.646      239. 6.46e-54         1    0.628     0.663 1-sam~
+    ## # ... with 1 more variable: alternative <chr>
+
+``` r
+result_tidy%>%pull(estimate)
+```
+
+    ## [1] 0.6455607
+
+``` r
+result_tidy%>%pull(conf.low)
+```
+
+    ## [1] 0.6275625
+
+``` r
+result_tidy%>%pull(conf.high)
+```
+
+    ## [1] 0.6631599
 
 -   This data collects data of homicide criminals from 50 states in US, including their name,sex,age,race,living city,report date and disposition status.

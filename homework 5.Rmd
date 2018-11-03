@@ -44,6 +44,7 @@ ggplot(newdata,aes(x = week, y = observation, color = subject)) +
 # Problme 2
 ```{r}
 library(tidyverse)
+
 data=read_csv(file="C:/Users/lenovo/Desktop/p8105/data_import_examples/homicide-data.csv")
 data
 data=data%>%
@@ -51,14 +52,26 @@ data=data%>%
 data
 totalhomicide=data%>%
   group_by(city_state)%>%
-  summarize(total_homicide=n())
+  summarize(total_homicide=n())%>%
+  filter(!city_state=="Tulsa_AL")
 totalhomicide
 unsolved=data%>%
   group_by(city_state)%>%
   filter(disposition%in%c("Closed without arrest","Open/No arrest"))%>%
   summarize(unsolved_homicide=n())
 unsolved  
-  
+
+baltimore_total=filter(totalhomicide,city_state=="Baltimore_MD")
+baltimore_total
+baltimore_unsolved=filter(unsolved,city_state=="Baltimore_MD")
+baltimore_unsolved
+result=prop.test(baltimore_unsolved$unsolved_homicide,baltimore_total$total_homicide)
+result
+result_tidy=broom::tidy(result)
+result_tidy
+result_tidy%>%pull(estimate)
+result_tidy%>%pull(conf.low)
+result_tidy%>%pull(conf.high)
 ```
 
 * This data collects data of homicide criminals from 50 states in US, including their name,sex,age,race,living city,report date and disposition status. 
