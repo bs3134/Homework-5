@@ -532,4 +532,49 @@ result_tidy%>%pull(conf.high)
 
     ## [1] 0.6631599
 
+``` r
+homicide_data=left_join(totalhomicide,unsolved)
+```
+
+    ## Joining, by = "city_state"
+
+``` r
+homicide_data
+```
+
+    ## # A tibble: 50 x 3
+    ##    city_state     total_homicide unsolved_homicide
+    ##    <chr>                   <int>             <int>
+    ##  1 Albuquerque_NM            378               146
+    ##  2 Atlanta_GA                973               373
+    ##  3 Baltimore_MD             2827              1825
+    ##  4 Baton Rouge_LA            424               196
+    ##  5 Birmingham_AL             800               347
+    ##  6 Boston_MA                 614               310
+    ##  7 Buffalo_NY                521               319
+    ##  8 Charlotte_NC              687               206
+    ##  9 Chicago_IL               5535              4073
+    ## 10 Cincinnati_OH             694               309
+    ## # ... with 40 more rows
+
+``` r
+nest=nest(homicide_data,total_homicide:unsolved_homicide)
+nest
+```
+
+    ## # A tibble: 50 x 2
+    ##    city_state     data            
+    ##    <chr>          <list>          
+    ##  1 Albuquerque_NM <tibble [1 x 2]>
+    ##  2 Atlanta_GA     <tibble [1 x 2]>
+    ##  3 Baltimore_MD   <tibble [1 x 2]>
+    ##  4 Baton Rouge_LA <tibble [1 x 2]>
+    ##  5 Birmingham_AL  <tibble [1 x 2]>
+    ##  6 Boston_MA      <tibble [1 x 2]>
+    ##  7 Buffalo_NY     <tibble [1 x 2]>
+    ##  8 Charlotte_NC   <tibble [1 x 2]>
+    ##  9 Chicago_IL     <tibble [1 x 2]>
+    ## 10 Cincinnati_OH  <tibble [1 x 2]>
+    ## # ... with 40 more rows
+
 -   This data collects data of homicide criminals from 50 states in US, including their name,sex,age,race,living city,report date and disposition status.

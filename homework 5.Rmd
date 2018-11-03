@@ -72,6 +72,12 @@ result_tidy
 result_tidy%>%pull(estimate)
 result_tidy%>%pull(conf.low)
 result_tidy%>%pull(conf.high)
+
+homicide_data=left_join(totalhomicide,unsolved)
+homicide_data
+nest=nest(homicide_data,total_homicide:unsolved_homicide)
+nest
+
 ```
 
 * This data collects data of homicide criminals from 50 states in US, including their name,sex,age,race,living city,report date and disposition status. 
