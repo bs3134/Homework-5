@@ -353,7 +353,7 @@ ggplot(newdata,aes(x = week, y = observation, color = subject)) +
 
 -   From the ploy, we can find the observations in exp group is obviously higher than observations in control group.
 
-Problme 2
+Problem 2
 =========
 
 ``` r
@@ -424,7 +424,7 @@ data
 totalhomicide=data%>%
   group_by(city_state)%>%
   summarize(total_homicide=n())%>%
-  filter(!city_state=="Tulsa_AL")
+  filter(!city_state=="Tulsa_AL")              #Remove the Tulsa_AL #
 totalhomicide
 ```
 
@@ -533,48 +533,33 @@ result_tidy%>%pull(conf.high)
     ## [1] 0.6631599
 
 ``` r
-homicide_data=left_join(totalhomicide,unsolved)
+total_result=map2(unsolved$unsolved_homicide,totalhomicide$total_homicide,prop.test)%>%
+  map(broom::tidy)
+total_data=left_join(unsolved,totalhomicide)
 ```
 
     ## Joining, by = "city_state"
 
 ``` r
-homicide_data
+all_proportion=mutate(total_data,total_result)%>%
+  unnest(total_result)%>%
+  select(city_state,unsolved_homicide,total_homicide,estimate,conf.low,conf.high)
+all_proportion
 ```
 
-    ## # A tibble: 50 x 3
-    ##    city_state     total_homicide unsolved_homicide
-    ##    <chr>                   <int>             <int>
-    ##  1 Albuquerque_NM            378               146
-    ##  2 Atlanta_GA                973               373
-    ##  3 Baltimore_MD             2827              1825
-    ##  4 Baton Rouge_LA            424               196
-    ##  5 Birmingham_AL             800               347
-    ##  6 Boston_MA                 614               310
-    ##  7 Buffalo_NY                521               319
-    ##  8 Charlotte_NC              687               206
-    ##  9 Chicago_IL               5535              4073
-    ## 10 Cincinnati_OH             694               309
+    ## # A tibble: 50 x 6
+    ##    city_state  unsolved_homici~ total_homicide estimate conf.low conf.high
+    ##    <chr>                  <int>          <int>    <dbl>    <dbl>     <dbl>
+    ##  1 Albuquerqu~              146            378    0.386    0.337     0.438
+    ##  2 Atlanta_GA               373            973    0.383    0.353     0.415
+    ##  3 Baltimore_~             1825           2827    0.646    0.628     0.663
+    ##  4 Baton Roug~              196            424    0.462    0.414     0.511
+    ##  5 Birmingham~              347            800    0.434    0.399     0.469
+    ##  6 Boston_MA                310            614    0.505    0.465     0.545
+    ##  7 Buffalo_NY               319            521    0.612    0.569     0.654
+    ##  8 Charlotte_~              206            687    0.300    0.266     0.336
+    ##  9 Chicago_IL              4073           5535    0.736    0.724     0.747
+    ## 10 Cincinnati~              309            694    0.445    0.408     0.483
     ## # ... with 40 more rows
 
-``` r
-nest=nest(homicide_data,total_homicide:unsolved_homicide)
-nest
-```
-
-    ## # A tibble: 50 x 2
-    ##    city_state     data            
-    ##    <chr>          <list>          
-    ##  1 Albuquerque_NM <tibble [1 x 2]>
-    ##  2 Atlanta_GA     <tibble [1 x 2]>
-    ##  3 Baltimore_MD   <tibble [1 x 2]>
-    ##  4 Baton Rouge_LA <tibble [1 x 2]>
-    ##  5 Birmingham_AL  <tibble [1 x 2]>
-    ##  6 Boston_MA      <tibble [1 x 2]>
-    ##  7 Buffalo_NY     <tibble [1 x 2]>
-    ##  8 Charlotte_NC   <tibble [1 x 2]>
-    ##  9 Chicago_IL     <tibble [1 x 2]>
-    ## 10 Cincinnati_OH  <tibble [1 x 2]>
-    ## # ... with 40 more rows
-
--   This data collects data of homicide criminals from 50 states in US, including their name,sex,age,race,living city,report date and disposition status.
+-   This data collects data of homicide criminals from 50 states in US,including 52179 observations and 12 variables, variables include their name,sex,age,race,living city,report date and disposition status.

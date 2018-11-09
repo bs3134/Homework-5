@@ -41,7 +41,7 @@ ggplot(newdata,aes(x = week, y = observation, color = subject)) +
 * From the ploy, we can find the observations in exp group is obviously higher than observations in control group.
 
 
-# Problme 2
+# Problem 2
 ```{r}
 library(tidyverse)
 
@@ -53,7 +53,7 @@ data
 totalhomicide=data%>%
   group_by(city_state)%>%
   summarize(total_homicide=n())%>%
-  filter(!city_state=="Tulsa_AL")
+  filter(!city_state=="Tulsa_AL")              #Remove the Tulsa_AL #
 totalhomicide
 unsolved=data%>%
   group_by(city_state)%>%
@@ -73,11 +73,18 @@ result_tidy%>%pull(estimate)
 result_tidy%>%pull(conf.low)
 result_tidy%>%pull(conf.high)
 
-homicide_data=left_join(totalhomicide,unsolved)
-homicide_data
-nest=nest(homicide_data,total_homicide:unsolved_homicide)
-nest
+total_result=map2(unsolved$unsolved_homicide,totalhomicide$total_homicide,prop.test)%>%
+  map(broom::tidy)
+total_data=left_join(unsolved,totalhomicide)
+all_proportion=mutate(total_data,total_result)%>%
+  unnest(total_result)%>%
+  select(city_state,unsolved_homicide,total_homicide,estimate,conf.low,conf.high)
+all_proportion
+  
+  
+  
+
 
 ```
 
-* This data collects data of homicide criminals from 50 states in US, including their name,sex,age,race,living city,report date and disposition status. 
+* This data collects data of homicide criminals from 50 states in US,including 52179 observations and 12 variables, variables include their name,sex,age,race,living city,report date and disposition status. 
