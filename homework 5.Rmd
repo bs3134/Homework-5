@@ -1,5 +1,6 @@
 ---
 title: "Untitled"
+author: Bihui Sun
 output: github_document
 ---
 
@@ -38,7 +39,7 @@ ggplot(newdata,aes(x = week, y = observation, color = subject)) +
 
 ```
 
-* From the ploy, we can find the observations in exp group is obviously higher than observations in control group.
+* From the plot, we can find the observations in exp group is obviously higher than observations in control group.
 
 
 # Problem 2

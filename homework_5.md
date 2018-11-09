@@ -1,5 +1,6 @@
 Untitled
 ================
+Bihui Sun
 
 Problem 1
 =========
@@ -351,7 +352,7 @@ ggplot(newdata,aes(x = week, y = observation, color = subject)) +
 
 ![](homework_5_files/figure-markdown_github/unnamed-chunk-1-1.png)
 
--   From the ploy, we can find the observations in exp group is obviously higher than observations in control group.
+-   From the plot, we can find the observations in exp group is obviously higher than observations in control group.
 
 Problem 2
 =========
