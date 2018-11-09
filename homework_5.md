@@ -563,7 +563,9 @@ all_proportion
     ## # ... with 40 more rows
 
 ``` r
-ggplot(all_proportion,aes(x=city_state,y=estimate))+
+all_proportion%>%
+  mutate(city_state = forcats::fct_reorder(city_state, estimate))%>%
+  ggplot(aes(x=city_state,y=estimate))+
   geom_point()+
   geom_errorbar(aes(ymin=conf.low,ymax=conf.high))+
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
