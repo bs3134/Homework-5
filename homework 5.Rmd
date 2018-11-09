@@ -80,7 +80,11 @@ all_proportion=mutate(total_data,total_result)%>%
   unnest(total_result)%>%
   select(city_state,unsolved_homicide,total_homicide,estimate,conf.low,conf.high)
 all_proportion
-  
+
+ggplot(all_proportion,aes(x=city_state,y=estimate))+
+  geom_errorbar(aes(ymin=conf.low,ymax=conf.high))+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
   
   
 

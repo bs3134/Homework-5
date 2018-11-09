@@ -562,4 +562,12 @@ all_proportion
     ## 10 Cincinnati~              309            694    0.445    0.408     0.483
     ## # ... with 40 more rows
 
+``` r
+ggplot(all_proportion,aes(x=city_state,y=estimate))+
+  geom_errorbar(aes(ymin=conf.low,ymax=conf.high))+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+![](homework_5_files/figure-markdown_github/unnamed-chunk-2-1.png)
+
 -   This data collects data of homicide criminals from 50 states in US,including 52179 observations and 12 variables, variables include their name,sex,age,race,living city,report date and disposition status.
