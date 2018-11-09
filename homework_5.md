@@ -564,6 +564,7 @@ all_proportion
 
 ``` r
 ggplot(all_proportion,aes(x=city_state,y=estimate))+
+  geom_point()+
   geom_errorbar(aes(ymin=conf.low,ymax=conf.high))+
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
